@@ -9,7 +9,8 @@ router.beforeEach(async (to, from, next) => {
   document.title = 'Enjoy Chatting with Music'
   const hasToken = getToken()
   if (hasToken) {
-
+    !store.state.user_info && await store.dispatch('getUser')
+    next()
   } else if (whiteList.includes(to.path)) {
     next()
   } else {

@@ -10,5 +10,5 @@ export function setToken(token: string) {
 
 export function clearToken() {
   cookies.remove(tokenKey)
-  localStorage.clear()
+
 }

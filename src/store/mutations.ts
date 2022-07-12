@@ -7,6 +7,14 @@ export default {
     Object.assign(state, getDefault())
   },
 
+  setSignInPopup(state, isShow) {
+    state.showSignInPopup = isShow;
+  },
+
+  setSignUpPopup(state, isShow) {
+    state.showSignUpPopup = isShow;
+  },
+
   /*--------------用户 信息---------------*/
   setToken(state, token) {
     state.token = token
@@ -46,9 +54,9 @@ export default {
 
   /*--------------音乐信息---------------*/
   setCurrentMusicInfo(state, currentMusicInfo) {
-    const { music_info, muisc_src, music_lrc, music_downloadSrc } = currentMusicInfo
+    const { music_info, music_src, music_lrc, music_downloadSrc } = currentMusicInfo
     state.music_info = music_info,
-      state.music_src = muisc_src,
+      state.music_src = music_src,
       state.music_lrc = music_lrc,
       state.music_downloadSrc = music_downloadSrc
   },
@@ -95,5 +103,14 @@ export default {
         k.quote_info.quote_message_status = 2
       }
     });
+  },
+
+  setUnReadMsgNum(state, unReadMsgNum) {
+    state.unReadMsgNum = unReadMsgNum;
+  },
+
+  setGlobalRoomConfig(state, { key, value }) {
+    state[key] = value;
+    localStorage.setItem(key, typeof value === 'boolean' ? JSON.stringify(value) : value);
   }
 }

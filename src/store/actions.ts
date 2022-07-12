@@ -13,13 +13,14 @@ export default {
   //获取当前房间信息
   async getCurrentRoom({ commit, state }) {
     const res = await getRoomDetail({ room_id: state.room_id })
-    commit('setRoomInfo', res.data)
+    console.log(res.data);
+    commit('setRoomInfo', res.data)  
   },
 
   //退出登录
   async loginOut({ commit }) {
     return new Promise<void>((resolve) => {
-      commit('clearToken')
+      commit('removeToken')
       commit('resetStore')
       const { origin } = window.location
       window.location.href = origin

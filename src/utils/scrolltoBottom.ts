@@ -5,5 +5,5 @@
 export function scrollBottom(options) {
   const { id = 'panel', animation = false } = options
   const el = document.getElementById(id)
-  animation ? el.scrollIntoView() : el.scrollIntoView({ behavior: "smooth" })
+  !animation ? el.scrollIntoView() : el.scrollIntoView({ behavior: "smooth" })
 }

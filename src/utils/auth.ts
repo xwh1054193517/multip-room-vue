@@ -1,14 +1,13 @@
-import cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 const tokenKey = 'token'
 export function getToken() {
-  return cookies.get(tokenKey)
+  return Cookies.get(tokenKey)
 }
 
 export function setToken(token: string) {
-  return cookies.set(tokenKey, token)
+  return Cookies.set(tokenKey, token, { expires: 7 })
 }
 
 export function clearToken() {
-  cookies.remove(tokenKey)
-
+  Cookies.remove(tokenKey)
 }

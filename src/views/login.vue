@@ -34,10 +34,11 @@
 import { reactive, ref, } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import 'element-plus/es/components/message/style/css'
+
 import { login } from '@/api/user';
 import { setToken } from '@/utils/auth';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
   user_name: '',
@@ -67,6 +68,7 @@ localStorage.user_name && (ruleForm.user_name = localStorage.user_name)
 localStorage.user_password && (ruleForm.user_password = localStorage.user_password)
 //登录
 const router = useRouter()
+const store = useStore()
 const Login = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
@@ -74,7 +76,7 @@ const Login = (formEl: FormInstance | undefined) => {
       const res = await login(ruleForm)
       const { data } = res
       const { token } = data
-      setToken(token)
+      store.commit('setToken', token)
       router.push("/");
       const { user_name, user_password } = ruleForm;
       localStorage.user_name = user_name;

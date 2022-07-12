@@ -14,7 +14,7 @@ const myaxios = axios.create(config)
 //请求拦截器
 myaxios.interceptors.request.use(cfg => {
   const reqConfig = { ...cfg }
- 
+
   //没有携带ulr
   if (!reqConfig.url) {
     throw new Error('no url');
@@ -72,12 +72,15 @@ myaxios.interceptors.response.use(response => {
 
   //服务器错误
   if (status == 500) {
+    store.commit('resetStore')
+    store.dispatch('loginOut')
     return
   }
 
   //身份认证 错误
   if (code == 401) {
-
+    ElMessage({ message: '身份信息校验失败、请重新登录', type: 'error' });
+    store.dispatch('loginOut');
   } else {
     ElMessage({
       message: message,

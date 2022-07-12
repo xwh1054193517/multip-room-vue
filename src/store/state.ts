@@ -11,6 +11,7 @@ export function getDefault() {
 
     online_user_list: [],
     message_list: [],
+    unReadMsgNum: 0,
 
     music_info: null,
     music_lrc: null,

@@ -37,10 +37,11 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import 'element-plus/es/components/message/style/css'
+
 import { setToken } from '@/utils/auth';
 import { useRouter } from 'vue-router';
 import { login, register } from '@/api/user';
+import { useStore } from 'vuex';
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
   user_name: '',
@@ -75,6 +76,7 @@ const rules = reactive({
 
 //注册
 const router = useRouter()
+const store = useStore()
 const Register = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
@@ -88,7 +90,7 @@ const Register = (formEl: FormInstance | undefined) => {
         const { user_name, user_password } = ruleForm;
         const { data } = await login({ user_name, user_password })
         const { token } = data
-        setToken(token)
+        store.commit('setToken', token)
         router.push("/")
         ElMessage({
           message: "登陆成功",

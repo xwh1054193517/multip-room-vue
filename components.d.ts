@@ -20,7 +20,16 @@ declare module '@vue/runtime-core' {
     MusicLyric: typeof import('./src/components/chat/musicLyric/index.vue')['default']
     MusicPlayer: typeof import('./src/components/chat/musicPlayer/index.vue')['default']
     MusicProgress: typeof import('./src/components/chat/musicProgress/index.vue')['default']
+    OnlineUserList: typeof import('./src/components/chat/chatHeader/components/OnlineUserList.vue')['default']
+    PersonInfo: typeof import('./src/components/chat/chatHeader/components/PersonInfo.vue')['default']
+    RoomList: typeof import('./src/components/chat/chatHeader/components/RoomList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ToolChooseMusic: typeof import('./src/components/chat/chatTool/components/ToolChooseMusic.vue')['default']
+    ToolCollect: typeof import('./src/components/chat/chatTool/components/ToolCollect.vue')['default']
+    ToolQueueList: typeof import('./src/components/chat/chatTool/components/ToolQueueList.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

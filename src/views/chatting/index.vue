@@ -1,20 +1,20 @@
 <template>
-  <div class="chatting-room" :style="{ backgroundImage: `url(${room_bg})` }">
+  <div class="chatting" :style="{ backgroundImage: `url(${room_bg})` }">
     <transition>
-      <div class="chatting-container" v-show="showChat">
-        <div class="chat-header-wrapper">
+      <div class="chatting-wrapper" v-show="showChat">
+        <div class="chatting-wrapper-header">
           <chat-header></chat-header>
         </div>
-        <div class="chat-content-wrapper">
+        <div class="chatting-wrapper-content">
           <message-area></message-area>
           <transition>
-            <div v-if="state['unReadMsgNum']" class="unReadMsg">{{ state['unReadMsgNum'] }}条未读信息</div>
+            <div v-if="state['unReadMsgNum'].value" class="unReadMsg">{{ state['unReadMsgNum'].value }}条未读信息</div>
           </transition>
         </div>
-        <div class="music-progress-wrapper">
+        <div class="chatting-wrapper-progress">
           <music-progress></music-progress>
         </div>
-        <div class="chat-footer-wrapper">
+        <div class="chatting-wrapper-footer">
           <chat-message></chat-message>
           <music-lyric></music-lyric>
         </div>
@@ -86,6 +86,7 @@ const room_info = computed(() => {
 let room_bg = computed(() => {
   return getters['my_room_bg'].value || room_info.value.room_bg || Config.bg
 })
+
 
 
 
@@ -340,7 +341,10 @@ function confirmConnect() {
 
     })
     .catch(() => {
-      actions['loginOut']()
+      mutations['setRoomId'](888)
+      initSocket()
+      showChat.value = true
+      // actions['loginOut']()
     })
 }
 
@@ -348,7 +352,7 @@ function confirmConnect() {
 // created 进行的操作
 
 initLocalStorageConfig()
-localStorage.room_id && mutations['setRoomId'](localStorage.room_id);
+// localStorage.room_id && mutations['setRoomId'](localStorage.room_id);
 // initSocket()
 onBeforeMount(() => {
   socketSubscribe()
@@ -366,5 +370,74 @@ onBeforeUnmount(() => {
   proxy.$socket.connected && proxy.$socket.client.disconnect()
 })
 </script>
+
+
 <style lang="less" scoped>
+@media screen and (max-width:640px) {
+  .chatting-wrapper {
+    position: fixed;
+    width: 100vw !important;
+    height: 100vh !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: 0 !important;
+    border-radius: 0 !important;
+  }
+}
+
+.chatting {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+
+  &-wrapper {
+    position: fixed;
+    left: 7%;
+    right: 7%;
+    top: 5%;
+    bottom: 5%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    transition: all 0.5s;
+    // background: @message-panel-bg-color;
+    // box-shadow: @message-panel-box-shadow;
+
+    &-header {
+      width: 100%;
+      height: 50px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    &-content {
+      flex: 1;
+      height: 0;
+      position: relative;
+
+      .unReadMsg {
+        transition: all ease 0.4s;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        padding: 5px 15px;
+        font-size: 12px;
+        color: #fff;
+        background: rgb(247, 161, 24);
+        font-weight: 500;
+        cursor: pointer;
+      }
+    }
+
+    &-progress {
+      height: 2px;
+      margin-bottom: 5px
+    }
+
+    &-footer {
+      padding: 0
+    }
+  }
+}
 </style>

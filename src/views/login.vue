@@ -3,7 +3,7 @@
     <div class="login-wrapper">
       <div class="logo">
         <span class="title">Enjoy Music In Chatting Room</span>
-        <img src="../assets/logo.gif">
+        <img :src="logo">
       </div>
 
 
@@ -36,9 +36,10 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
 import { login } from '@/api/user';
-import { setToken } from '@/utils/auth';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { Config } from '@/config';
+const logo = Config.gif
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
   user_name: '',

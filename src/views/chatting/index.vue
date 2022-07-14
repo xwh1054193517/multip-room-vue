@@ -1,13 +1,13 @@
 <template>
   <div class="chatting" :style="{ backgroundImage: `url(${room_bg})` }">
-    <transition>
+    <transition name="message-panel" mode="out-in">
       <div class="chatting-wrapper" v-show="showChat">
         <div class="chatting-wrapper-header">
           <chat-header></chat-header>
         </div>
         <div class="chatting-wrapper-content">
           <message-area></message-area>
-          <transition>
+          <transition name="msg-tips" mode="out-in">
             <div v-if="state['unReadMsgNum'].value" class="unReadMsg">{{ state['unReadMsgNum'].value }}条未读信息</div>
           </transition>
         </div>
@@ -341,10 +341,7 @@ function confirmConnect() {
 
     })
     .catch(() => {
-      mutations['setRoomId'](888)
-      initSocket()
-      showChat.value = true
-      // actions['loginOut']()
+      actions['loginOut']()
     })
 }
 

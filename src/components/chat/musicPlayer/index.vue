@@ -62,7 +62,7 @@ function handleError(e) {
 
 }
 onMounted(() => {
-  document.addEventListener("touchstart", handlerTouchPlay, false);
+  // document.addEventListener("touchstart", handlerTouchPlay, false);
   music.value.addEventListener('error', handleError, false)
 })
 </script>

@@ -10,15 +10,15 @@
       <ToolCollect></ToolCollect>
     </chat-pop>
     <div class="toolbar-content">
-      <div :class="['toolbar-content-item', ' flex_center', { 'active-menu': opt.opt1.show }]"
+      <div :class="['toolbar-content-item', ' flex-center', { 'active-menu': opt.opt1.show }]"
         @click.stop="openBody(1)">
         点歌
       </div>
-      <div :class="['toolbar-content-item', ' flex_center', { 'active-menu': opt.opt2.show }]"
+      <div :class="['toolbar-content-item', ' flex-center', { 'active-menu': opt.opt2.show }]"
         @click.stop="openBody(2)">
         歌单
       </div>
-      <div :class="['toolbar-content-item', ' flex_center', { 'active-menu': opt.opt3.show }]"
+      <div :class="['toolbar-content-item', ' flex-center', { 'active-menu': opt.opt3.show }]"
         @click.stop="openBody(3)">
         收藏
       </div>
@@ -33,9 +33,7 @@ import ToolChooseMusic from './components/ToolChooseMusic.vue';
 import ToolQueueList from './components/ToolQueueList.vue';
 import ToolCollect from './components/ToolCollect.vue';
 import { reactive } from 'vue';
-// const opt1 = reactive({ show: false })
-// const opt2 = reactive({ show: false })
-// const opt3 = reactive({ show: false })
+
 const opt = reactive({
   opt1: { show: false },
   opt2: { show: false },
@@ -71,6 +69,7 @@ function closeBody() {
   &-content {
     display: flex;
     font-size: 1rem;
+
     &-item {
       user-select: none;
       margin-right: 5px;

@@ -19,8 +19,8 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+  history: createWebHistory('/chat/'),
+  routes,
 })
 
 export default router

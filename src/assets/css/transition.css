@@ -71,16 +71,7 @@
   }
 }
 
-.msg-tips-enter-from,
-.msg-tips-leave-to {
-  transform: translateY(20px);
-  opacity: 0;
-}
 
-.msg-tips-enter-active,
-.msg-tips-leave-active {
-  transition: all 0.5s ease;
-}
 
 .msg-tips-enter-from,
 .msg-tips-leave-to {

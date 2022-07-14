@@ -144,9 +144,11 @@ const forgetPassword = () => {
   }
 
   .form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 30px;
     margin-bottom: 15px;
-    width: 300px;
   }
 
   .change {

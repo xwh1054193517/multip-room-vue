@@ -15,7 +15,6 @@
           <el-form-item prop="user_password">
             <el-input v-model="ruleForm.user_password" type="password" show-password placeholder="请输入密码" />
           </el-form-item>
-
         </el-form>
       </div>
 
@@ -153,6 +152,7 @@ const forgetPassword = () => {
 
   .change {
     display: flex;
+    width: 100%;
     justify-content: space-between;
     font-size: 12px;
     cursor: pointer;

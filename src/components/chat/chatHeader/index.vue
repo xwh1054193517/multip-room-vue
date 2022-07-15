@@ -52,7 +52,7 @@
     <chat-pop :options="opt.opt2" :top="60" :right="10" :height="450" title="房间列表">
       <RoomList></RoomList>
     </chat-pop>
-    <chat-pop :options="opt.opt3" :top="60" :right="10" :height="450" title="个人信息">
+    <chat-pop :options="opt.opt3" :top="60" :right="10" :height="500" title="个人信息">
       <PersonInfo></PersonInfo>
     </chat-pop>
   </div>
@@ -65,6 +65,7 @@ import OnlineUserList from './components/OnlineUserList.vue';
 import RoomList from './components/RoomList.vue';
 import PersonInfo from './components/PersonInfo.vue';
 import { useActions, useGetters, useMutations } from '@/utils/hooks/useMap';
+import { ElMessage, ElMessageBox } from 'element-plus';
 const opt = reactive({
   opt1: { show: false },
   opt2: { show: false },
@@ -89,7 +90,20 @@ function closeBody() {
 
 //注销 退出登录
 function handleLoginout() {
-
+  ElMessageBox.confirm(
+    '确定要退出登录吗！',
+    '退出登录',
+    {
+      confirmButtonText: '确认加入',
+      cancelButtonText: '返回',
+    }
+  )
+    .then(() => {
+        actions['loginOut']()
+    })
+    .catch(() => {
+      ElMessage({message:'取消了登出',type:'info'})
+    })
 }
 
 const getters = useGetters([

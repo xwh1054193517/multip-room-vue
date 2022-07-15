@@ -22,9 +22,8 @@ export default {
     return new Promise<void>((resolve) => {
       commit('removeToken')
       commit('resetStore')
-      const { origin } = window.location
-      window.location.href = origin
-      // router.replace('/login')
+    
+      router.replace('/login')
       resolve()
     })
   }

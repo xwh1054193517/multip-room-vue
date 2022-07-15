@@ -361,6 +361,8 @@ onBeforeMount(() => {
 onMounted(() => {
   initUserAddress()
   confirmConnect()
+  console.log(store.state);
+
 })
 
 onBeforeUnmount(() => {
@@ -399,8 +401,8 @@ onBeforeUnmount(() => {
     flex-direction: column;
     z-index: 1;
     transition: all 0.5s;
-    // background: @message-panel-bg-color;
-    // box-shadow: @message-panel-box-shadow;
+    background: #24293cbf;
+    box-shadow: 0 0 5px #bdbbbbae;
 
     &-header {
       width: 100%;

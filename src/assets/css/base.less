@@ -1,3 +1,5 @@
+@import '../../theme/theme.less';
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -20,4 +22,63 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+
+@font-face {
+  font-family: 'webfont';
+  font-display: swap;
+  src: url('//at.alicdn.com/t/webfont_9pbijjfbiud.eot');
+  /* IE9*/
+  src: url('//at.alicdn.com/t/webfont_9pbijjfbiud.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+    url('//at.alicdn.com/t/webfont_9pbijjfbiud.woff2') format('woff2'),
+    url('//at.alicdn.com/t/webfont_9pbijjfbiud.woff') format('woff'),
+    /* chrome、firefox */
+    url('//at.alicdn.com/t/webfont_9pbijjfbiud.ttf') format('truetype'),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('//at.alicdn.com/t/webfont_9pbijjfbiud.svg#NotoSansHans-DemiLight') format('svg');
+  /* iOS 4.1- */
+}
+
+// element样式修改
+.el-drawer,
+.el-dialog,
+.el-message-box {
+  background-color: @drawer-bgcolor  !important;
+}
+
+.el-message-box {
+  border: 1px solid @drawer-bgcolor  !important;
+}
+
+.el-drawer__open .el-drawer.rtl {
+  background-color: rgba(@drawer-bgcolor, .8);
+}
+
+.el-form-item__label,
+.el-radio,
+.el-drawer__header,
+.el-dialog__title,
+.el-message-box__content,
+.el-message-box__title,
+.el-popover__title {
+  color: @message-text-color  !important;
+}
+
+.el-popover__title {
+  font-weight: 500 !important;
+}
+
+.el-popover {
+  background: @pop-bgcolor  !important;
+  border-color: @pop-bgcolor  !important;
+}
+
+.el-popper .popper__arrow {
+  border-width: 0 !important;
+}
+
+.el-popper .popper__arrow::after {
+  border-width: 0 !important;
 }

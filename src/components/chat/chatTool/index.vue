@@ -12,14 +12,17 @@
     <div class="toolbar-content">
       <div :class="['toolbar-content-item', ' flex-center', { 'active-menu': opt.opt1.show }]"
         @click.stop="openBody(1)">
+        <icon name="toolbar-music" class="icon" scale="1.6" />
         点歌
       </div>
       <div :class="['toolbar-content-item', ' flex-center', { 'active-menu': opt.opt2.show }]"
         @click.stop="openBody(2)">
+        <icon name="toolbar-list" class="icon" scale="1.6" />
         歌单
       </div>
       <div :class="['toolbar-content-item', ' flex-center', { 'active-menu': opt.opt3.show }]"
         @click.stop="openBody(3)">
+        <icon name="toolbar-collect" class="icon" scale="1.6" />
         收藏
       </div>
     </div>
@@ -55,6 +58,12 @@ function closeBody() {
 }
 </script>
 <style lang="less" scoped>
+@import '../../../theme/theme.less';
+
+.icon {
+  margin-right: 5px;
+}
+
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -63,7 +72,8 @@ function closeBody() {
   color: #999;
 
   .active-menu {
-    background: #292f45e6
+    background: #292f45e6;
+    // background: @hover-bgcolor;
   }
 
   &-content {
@@ -84,7 +94,8 @@ function closeBody() {
       }
 
       &:hover {
-        background: #292f45e6;
+        // background: #292f45e6;
+        background: @hover-bgcolor
       }
 
     }

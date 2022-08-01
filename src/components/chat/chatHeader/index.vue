@@ -7,7 +7,7 @@
         </span>
         {{ (getters['room_info'] && getters['room_info'].value && getters['room_info'].value['room_id']) }}
       </div>
-      <div class="header-left-roomname">
+      <div class="header-left-roomname visible-xl visible-lg">
         <span>{{ (getters['room_info'] && getters['room_info'].value && getters['room_info'].value['room_name'])
         }}</span>
       </div>
@@ -26,6 +26,7 @@
         'flex-center',
         { 'active-menu': opt.opt1.show },
       ]" @click.stop="openBody(1)">
+        <icon name="chat-online" scale="1.8" class="icon" />
         <span class="visible-xl visible-lg"> 在线[{{ getters['online_user_Num'] }}] </span>
       </div>
       <div :class="[
@@ -33,6 +34,7 @@
         'flex-center',
         { 'active-menu': opt.opt2.show },
       ]" @click.stop="openBody(2)">
+        <icon name="chat-room" scale="1.8" class="icon" />
         <span class="visible-xl visible-lg">房间[{{ getters['online_room_Num'] }}]</span>
       </div>
       <div :class="[
@@ -40,9 +42,11 @@
         'flex-center',
         { 'active-menu': opt.opt3.show },
       ]" @click.stop="openBody(3)">
+        <icon name="chat-mine" scale="1.8" class="icon" />
         <span class="visible-xl visible-lg">我的</span>
       </div>
       <div class="header-right-item flex-center" @click="handleLoginout">
+        <icon name="chat-left" scale="1.8" class="icon" />
         <span class="visible-xl visible-lg">登出</span>
       </div>
     </div>
@@ -50,9 +54,10 @@
       <OnlineUserList></OnlineUserList>
     </chat-pop>
     <chat-pop :options="opt.opt2" :top="60" :right="10" :height="450" title="房间列表">
+      <!-- <el-button size="small" >{{ BtnText }}</el-button> -->
       <RoomList></RoomList>
     </chat-pop>
-    <chat-pop :options="opt.opt3" :top="60" :right="10" :height="500" title="个人信息">
+    <chat-pop :options="opt.opt3" :top="60" :right="10" :height="450" title="个人信息">
       <PersonInfo></PersonInfo>
     </chat-pop>
   </div>
@@ -60,7 +65,7 @@
 
 <script lang="ts" setup>
 import ChatPop from '@/components/chatPop/index.vue';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import OnlineUserList from './components/OnlineUserList.vue';
 import RoomList from './components/RoomList.vue';
 import PersonInfo from './components/PersonInfo.vue';
@@ -99,10 +104,10 @@ function handleLoginout() {
     }
   )
     .then(() => {
-        actions['loginOut']()
+      actions['loginOut']()
     })
     .catch(() => {
-      ElMessage({message:'取消了登出',type:'info'})
+      ElMessage({ message: '取消了登出', type: 'info' })
     })
 }
 
@@ -115,18 +120,25 @@ const getters = useGetters([
 ])
 const actions = useActions(['getUser', 'loginOut'])
 const mutations = useMutations(['setSignInPopup', 'setRoomId'])
+
+const BtnText = computed(() => {
+  return !getters['my_room_id'].value ? '创建房间' : '我的房间'
+})
 </script>
 <style lang="less" scoped>
+@import '../../../theme/theme.less';
+
 .header {
   height: 100%;
   padding: 0 15px;
   user-select: none;
+  color: @message-text-color;
 
   &-left {
     &-roomid {
       user-select: none;
       background-color: rgb(0, 255, 221);
-      color: aliceblue;
+      color: @message-text-color;
       display: flex;
       padding: 0 5px;
       font-size: 14px;
@@ -136,7 +148,6 @@ const mutations = useMutations(['setSignInPopup', 'setRoomId'])
 
     &-roomname {
       font-size: 18px;
-      color: aliceblue;
       user-select: none;
       margin-right: 12px;
     }
@@ -147,20 +158,24 @@ const mutations = useMutations(['setSignInPopup', 'setRoomId'])
       padding: 5px 12px;
       font-size: 14px;
       transition: all 0.3s ease;
-      color: aliceblue;
+      color: @message-text-color;
       margin: 0 3px;
       z-index: 100;
+      border-radius: 4px;
       cursor: pointer;
+
+      .icon {
+        margin-right: 3px;
+      }
 
       &:hover {
         filter: brightness(0.8);
+        background: @hover-bgcolor;
       }
 
       &:active {
         filter: brightness(1.2);
         transform: translateY(2px);
-        color: rgb(182, 177, 177);
-        background: rgb(245, 238, 238);
       }
     }
 

@@ -13,6 +13,7 @@ export function getDefault() {
     message_list: [],
     unReadMsgNum: 0,
 
+    music_volume: localStorage.getItem('volume') || 0.5,
     music_info: null,
     music_lrc: null,
     music_src: null,

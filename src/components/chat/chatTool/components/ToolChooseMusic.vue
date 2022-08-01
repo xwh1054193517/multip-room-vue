@@ -2,7 +2,9 @@
   <div v-loading="loading" class="chooseMusic">
     <div class="chooseMusic-header">
       <input v-model="param.keyword" type="text" />
-      <div class="chooseMusic-header-search" @click="searchSong">搜索</div>
+      <div class="chooseMusic-header-search" @click="searchSong">
+        <icon name="toolbar-search" style="margin-right:5px;" scale="1.6" />搜索
+      </div>
     </div>
     <div class="chooseMusic-body">
       <div v-if="!showMusicList" class="chooseMusic-body-empty">
@@ -19,9 +21,11 @@
             <div class="music-info-singer">歌手：{{ item.music_singer }} 专辑:{{ item.music_album }}</div>
           </div>
           <div class="music-btn" @click="chooseMusic(item)">
+            <icon name="choose-music-play" style="margin-right:5px;" scale="1.6" />
             点歌
           </div>
           <div class="music-btn" @click="collectSong(item)">
+            <icon name="choose-music-collect" style="margin-right:5px;" scale="1.6" />
             收藏
           </div>
         </div>
@@ -91,9 +95,11 @@ async function getDailyRecommend() {
 getDailyRecommend()
 </script>
 <style lang="less" scoped>
+@import '../../../../theme/theme.less';
+
 .chooseMusic {
   padding: 0 15px;
-  border-top: 1px solid #fff;
+  border-top: 1px solid @message-border;
 
   &-header {
     display: flex;
@@ -104,7 +110,7 @@ getDailyRecommend()
     color: rgba(233, 232, 232, 0.882);
     border-radius: 5px;
     margin: 8px 0;
-    border: 1px solid rgba(169, 169, 169, 0.756);
+    border: 1px solid @message-border;
 
     input {
       padding: 5px 15px;
@@ -113,7 +119,7 @@ getDailyRecommend()
       outline: none;
       border: none;
       background: transparent;
-      color: aliceblue;
+      color: @message-text-color;
 
       &::placeholder {
         color: #ccc;
@@ -123,10 +129,12 @@ getDailyRecommend()
 
     &-search {
       padding: 5px 16px;
-      border-left: 1px solid #ccc;
+      border-left: 1px solid @message-border;
       user-select: none;
       display: flex;
       align-items: center;
+      color: @message-text-color;
+      font-weight: 700;
       cursor: pointer;
 
       &:hover {
@@ -135,14 +143,13 @@ getDailyRecommend()
 
       &:active {
         filter: brightness(1.2);
-        transform: scale(1.2);
-        border-left: 1px solid transparent;
+        transform: translateY(2px);
       }
     }
   }
 
   &-body {
-    height:400px;
+    height: 400px;
     user-select: none;
     overflow: hidden;
     overflow-y: auto;
@@ -154,9 +161,13 @@ getDailyRecommend()
       justify-content: center;
       align-items: center;
 
+      .icon {
+        margin-bottom: 10px;
+      }
+
       .notice {
         user-select: none;
-        color: rgb(198, 198, 198);
+        color: @message-text-color;
         font-size: 20px;
       }
     }
@@ -165,7 +176,7 @@ getDailyRecommend()
       display: flex;
       align-items: center;
       padding: 10px 0;
-      border-top: 1px solid #eee;
+      border-top: 1px solid @message-border;
 
       &-image {
         width: 50px;
@@ -179,11 +190,12 @@ getDailyRecommend()
         margin-left: 8px;
         flex: 1;
         width: 0;
-        color: aliceblue;
+        color: @message-text-color;
 
         &-name {
           font-size: 16px;
           font-weight: 600;
+          color: @message-text-color;
         }
 
         &-singer {
@@ -198,13 +210,14 @@ getDailyRecommend()
         cursor: pointer;
         display: flex;
         align-items: center;
-        color: aliceblue;
-        border: 1px solid #eee;
+        color: @message-text-color;
+        border: 1px solid rgb(175, 175, 175);
         margin: 0 3px;
         transition: all 0.3s ease;
 
         &:hover {
           filter: brightness(0.8);
+          background: @hover-bgcolor;
         }
 
         &:active {

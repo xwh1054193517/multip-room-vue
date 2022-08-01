@@ -1,0 +1,193 @@
+@breakpoints-xs: 0;
+// 0 - 576 Small screen / phone
+@breakpoints-sm: 576px;
+// 576 - 768 Medium screen / tablet
+@breakpoints-md: 768px;
+// 768 - 992 Large screen / desktop
+@breakpoints-lg: 992px;
+// 992 - 1200 Extra large screen / wide desktop
+@breakpoints-xl: 1200px;
+
+/* ===== 默认影藏 ===== */
+.visible-xs,
+.visible-xs-block,
+.visible-xs-inline,
+.visible-xs-inline-block,
+.visible-sm,
+.visible-sm-block,
+.visible-sm-inline,
+.visible-sm-inline-block,
+.visible-md,
+.visible-md-block,
+.visible-md-inline,
+.visible-md-inline-block,
+.visible-lg,
+.visible-lg-block,
+.visible-lg-inline,
+.visible-lg-inline-block,
+.visible-xl,
+.visible-xl-block,
+.visible-xl-inline,
+.visible-xl-inline-block {
+  display: none !important;
+}
+/* ===== 定义元素隐藏的方式 ===== */
+.responsive-invisibility() {
+  display: none !important;
+}
+
+.responsive-visibility() {
+  display: block !important;
+
+}
+
+.visible-xs {
+  @media (min-width: @breakpoints-xs) and (max-width: @breakpoints-sm) {
+    .responsive-visibility();
+  }
+}
+
+.visible-xs-block {
+  @media (min-width: @breakpoints-xs) and (max-width: @breakpoints-sm) {
+    display: block !important;
+  }
+}
+
+.visible-xs-inline {
+  @media (min-width: @breakpoints-xs) and (max-width: @breakpoints-sm) {
+    display: inline !important;
+  }
+}
+
+.visible-xs-inline-block {
+  @media (min-width: @breakpoints-xs) and (max-width: @breakpoints-sm) {
+    display: inline-block !important;
+  }
+}
+
+.visible-sm {
+  @media (min-width: @breakpoints-sm) and (max-width: @breakpoints-md) {
+    .responsive-visibility();
+  }
+}
+
+.visible-sm-block {
+  @media (min-width: @breakpoints-sm) and (max-width: @breakpoints-md) {
+    display: block !important;
+  }
+}
+
+.visible-sm-inline {
+  @media (min-width: @breakpoints-sm) and (max-width: @breakpoints-md) {
+    display: inline !important;
+  }
+}
+
+.visible-sm-inline-block {
+  @media (min-width: @breakpoints-sm) and (max-width: @breakpoints-md) {
+    display: inline-block !important;
+  }
+}
+
+.visible-md {
+  @media (min-width: @breakpoints-md) and (max-width: @breakpoints-lg) {
+    .responsive-visibility();
+  }
+}
+
+.visible-md-block {
+  @media (min-width: @breakpoints-md) and (max-width: @breakpoints-lg) {
+    display: block !important;
+  }
+}
+
+.visible-md-inline {
+  @media (min-width: @breakpoints-md) and (max-width: @breakpoints-lg) {
+    display: inline !important;
+  }
+}
+
+.visible-md-inline-block {
+  @media (min-width: @breakpoints-md) and (max-width: @breakpoints-lg) {
+    display: inline-block !important;
+  }
+}
+
+.visible-lg {
+  @media (min-width: @breakpoints-lg) and (max-width: @breakpoints-xl) {
+    .responsive-visibility();
+  }
+}
+
+.visible-lg-block {
+  @media (min-width: @breakpoints-lg) and (max-width: @breakpoints-xl) {
+    display: block !important;
+  }
+}
+
+.visible-lg-inline {
+  @media (min-width: @breakpoints-lg) and (max-width: @breakpoints-xl) {
+    display: inline !important;
+  }
+}
+
+.visible-lg-inline-block {
+  @media (min-width: @breakpoints-lg) and (max-width: @breakpoints-xl) {
+    display: inline-block !important;
+  }
+}
+
+.visible-xl {
+  @media (min-width: @breakpoints-xl) {
+    .responsive-visibility();
+  }
+}
+
+.visible-xl-block {
+  @media (min-width: @breakpoints-xl) {
+    display: block !important;
+  }
+}
+
+.visible-xl-inline {
+  @media (min-width: @breakpoints-xl) {
+    display: inline !important;
+  }
+}
+
+.visible-xl-inline-block {
+  @media (min-width: @breakpoints-xl) {
+    display: inline-block !important;
+  }
+}
+
+
+.hidden-xs {
+  @media (min-width: @breakpoints-xs) and (max-width: @breakpoints-sm) {
+    .responsive-invisibility();
+  }
+}
+
+.hidden-sm {
+  @media (min-width: @breakpoints-sm) and (max-width: @breakpoints-md) {
+    .responsive-invisibility();
+  }
+}
+
+.hidden-md {
+  @media (min-width: @breakpoints-md) and (max-width: @breakpoints-lg) {
+    .responsive-invisibility();
+  }
+}
+
+.hidden-lg {
+  @media (min-width: @breakpoints-lg) and (max-width: @breakpoints-xl) {
+    .responsive-invisibility();
+  }
+}
+
+.hidden-xl {
+  @media (min-width: @breakpoints-xl) {
+    .responsive-invisibility();
+  }
+}

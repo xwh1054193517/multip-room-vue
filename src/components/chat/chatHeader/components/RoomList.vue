@@ -29,11 +29,13 @@ const store = useStore()
 const room_list = computed(() => store.getters.room_list)
 const room_id = computed(() => store.getters.room_id)
 const my_id = computed(() => store.getters.my_id)
-function handlerJoinRoom(item){
-  
+function handlerJoinRoom(item) {
+
 }
 </script>
 <style lang="less" scoped>
+@import '../../../../theme/theme.less';
+
 .current {
   border-right-color: #ff09eb73 !important;
 }
@@ -73,7 +75,7 @@ function handlerJoinRoom(item){
 
       &-name {
         font-size: 15px;
-        color: rgba(247, 251, 255, 0.879);
+        color: @message-text-color;
         font-weight: 600;
         display: flex;
         justify-content: space-between;

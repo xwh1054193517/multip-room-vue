@@ -31,6 +31,7 @@ function fineMyself(id) {
 }
 </script>
 <style lang="less" scoped>
+@import '../../../../theme/theme.less';
 .current {
   border-right-color: #ff09eb73 !important;
 }
@@ -46,6 +47,7 @@ function fineMyself(id) {
     align-items: center;
     cursor: pointer;
     transition: all 0.3s;
+    border-top: 1px solid @message-border;
     border-left: 3px solid transparent;
     border-right: 3px solid transparent;
     padding: 5px;
@@ -70,7 +72,7 @@ function fineMyself(id) {
 
       &-name {
         font-size: 15px;
-        color: rgba(247, 251, 255, 0.879);
+        color: @message-text-color;
         font-weight: 600;
         display: flex;
         justify-content: space-between;

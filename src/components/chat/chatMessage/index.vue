@@ -11,6 +11,7 @@
             <span class="file-info-name">{{ file.name }}</span>
             <span class="file-info-size">{{ file.size }}</span>
           </div>
+          <icon class="file-icon" name="chat-unknown-file" scale="4" />
         </div>
       </div>
       <!-- 发送文字消息 -->
@@ -35,17 +36,21 @@
               <span class="file-info-name">{{ quoteMessage.message_content.name }}</span>
               <span class="file-info-size">{{ quoteMessage.message_content.size }}</span>
             </div>
+            <icon class="file-icon" name="chat-unknown-file" scale="4" />
           </div>
         </div>
       </span>
+      <icon name="chat-quote-del" scale="2.5" class="del-icon" @click.stop="delQuoteMsg" />
     </div>
     <div class="chatMessage-empty" @click="focusInput"></div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { scrollBottom } from '@/utils/scrolltoBottom';
+import { getFile, putFile } from '@/utils/upload';
 import { ElMessage } from 'element-plus';
-import { getCurrentInstance, ref, watch } from 'vue';
+import { getCurrentInstance, nextTick, ref, watch } from 'vue';
 import ChatTool from '../chatTool/index.vue';
 const allowImg = ref(['png', 'jpg', 'gif', 'jpeg'])
 const file = ref(null)
@@ -73,8 +78,8 @@ async function sendMessage(e) {
         message_type: 'text',
         message_content: JSON.stringify(message.value)
       }
-      quoteMessage.value && (data.quoteMessage = quoteMessage.value)
-      // proxy.$socket.client.emit('message', data)
+      quoteMessage.value && (data.quote_message = quoteMessage.value)
+      proxy.$socket.client.emit('message', data)
       console.log(data);
 
     }
@@ -83,27 +88,20 @@ async function sendMessage(e) {
     if (!message.value && file.value) {
       console.log('只有文件');
       const { name, orgfile, type, size } = file.value
-      const formData = new FormData()
-      formData.append("file", orgfile)
-      const config = { headers: { "Content-Type": "multipart/form-data" } }
       try {
         //此处上传文件
-        const res = {
-          data: {
-            data: [{ url: '12' }]
-          }
-        }
-
-        const content = { name, size, type, url: res.data.data[0].url };
+        const res: any = await putFile(file.value, 'chat')
+        // console.log(res);    
+        const content = { name, size, type, url: res.url };
         const data: any = {
           message_type: type,
           message_content: JSON.stringify(content)
         }
-        quoteMessage.value && (data.quoteMessage = quoteMessage.value)
-        // proxy.$socket.client.emit('message', data)
-        console.log(data);
+        quoteMessage.value && (data.quote_message = quoteMessage.value)
+        proxy.$socket.client.emit('message', data)
+
       } catch (error) {
-        ElMessage({ message: "文件上传失败辣", type: 'error' })
+        ElMessage({ message: error, type: 'error' })
       }
     }
 
@@ -111,31 +109,25 @@ async function sendMessage(e) {
     if (message.value && file.value) {
       console.log('有文字有文件');
       const { name, orgfile, type, size } = file.value
-      const formData = new FormData()
-      formData.append("file", orgfile)
       const config = { headers: { "Content-Type": "multipart/form-data" } }
       try {
 
         //此处上传文件
-        const res = {
-          data: {
-            data: [{ url: '12' }]
-          }
-        }
+        const res: any = await putFile(file.value, 'chat')
         //先发送文件消息
-        const fileContent = { name, size, type, url: res.data.data[0].url };
+        const fileContent = { name, size, type, url: res.url };
         const fileData: any = {
           message_type: type,
           message_content: JSON.stringify(fileContent)
         }
-        // proxy.$socket.client.emit('message', fileData)
+        proxy.$socket.client.emit('message', fileData)
         // 在发送文字消息
         const textData: any = {
           message_type: 'text',
           message_content: JSON.stringify(message.value)
         }
-        quoteMessage.value && (textData.quoteMessage = quoteMessage.value)
-        // proxy.$socket.client.emit('message', textData)
+        quoteMessage.value && (textData.quote_message = quoteMessage.value)
+        proxy.$socket.client.emit('message', textData)
         console.log(fileData, textData);
       } catch (error) {
         ElMessage({ message: "文件上传失败辣", type: 'error' })
@@ -144,8 +136,10 @@ async function sendMessage(e) {
 
     //清空所有显示 
     clearAll()
+
     //防止添加换行符
     e.preventDefault();
+
   }
 }
 
@@ -210,8 +204,13 @@ function clearAll() {
 function formatSize(size) {
   return size > 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(2)}m` : `${(size / 1024).toFixed(2)}k`
 }
+
+//暴露这个方法给父组件
+defineExpose({ setQuoteMsg })
 </script>
 <style lang="less" scoped>
+@import '../../../theme/theme.less';
+
 .chatMessage {
   height: 180px;
   display: flex;
@@ -227,7 +226,7 @@ function formatSize(size) {
       object-fit: cover;
       border: 1px solid #b6b6b6;
       border-radius: 4px;
-      max-width: 200px;
+      max-width: 300px;
     }
 
     &-text {
@@ -238,7 +237,7 @@ function formatSize(size) {
       resize: none;
       outline: none;
       border: none;
-      color: aliceblue;
+      color: @message-text-color;
       box-sizing: border-box;
       background-color: transparent;
 
@@ -256,8 +255,8 @@ function formatSize(size) {
     margin-top: 5px;
 
     &-box {
-      background-color: #e5e5e5;
-      color: #c4c4c4;
+      background-color: #606060;
+      color: #ededed;
       display: flex;
       padding: 5px 13px;
       position: relative;
@@ -267,6 +266,18 @@ function formatSize(size) {
 
     &-img {
       max-height: 45px;
+    }
+
+    .del-icon {
+      color: #7d7878;
+      margin-left: 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+
+      &:hover {
+        transition: all 0.3s;
+        transform: scale(1.2);
+      }
     }
   }
 
@@ -298,6 +309,10 @@ function formatSize(size) {
       margin-top: 5px;
       font-size: 12px;
     }
+  }
+
+  .file-icon {
+    margin-left: 15px;
   }
 
   &-empty {

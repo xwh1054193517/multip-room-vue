@@ -7,13 +7,13 @@ export default {
   async getUser({ commit }) {
     const res = await getUserInfo()
     const { user_info } = res.data
+    // console.log(res.data);
     commit('setUserInfo', user_info)
   },
 
   //获取当前房间信息
   async getCurrentRoom({ commit, state }) {
     const res = await getRoomDetail({ room_id: state.room_id })
-    console.log(res.data);
     commit('setRoomInfo', res.data)  
   },
 

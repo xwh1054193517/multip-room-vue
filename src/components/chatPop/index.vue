@@ -49,6 +49,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="less" scoped>
+@import '../../theme/theme.less';
+
 .popFrame {
   position: absolute;
   width: 300px;
@@ -61,7 +63,7 @@ onBeforeUnmount(() => {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   box-shadow: 0 0 10px rgba(185, 153, 245, 0.2);
-  background-color: #21263675;
+  background-color: @pop-bgcolor;
 
   &-title {
     font-size: 16px;
@@ -71,7 +73,7 @@ onBeforeUnmount(() => {
     align-items: center;
     padding: 10px 15px;
     padding-right: 10px;
-    color: antiquewhite;
+    color: @message-text-color;
   }
 
   &-body {

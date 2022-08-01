@@ -6,16 +6,18 @@
           <chat-header></chat-header>
         </div>
         <div class="chatting-wrapper-content">
-          <message-area></message-area>
+          <message-area @quoteMsg="handleQuoteMes" @loadMoreHistory="handleLoadMore">
+          </message-area>
           <transition name="msg-tips" mode="out-in">
-            <div v-if="state['unReadMsgNum'].value" class="unReadMsg">{{ state['unReadMsgNum'].value }}条未读信息</div>
+            <div @click="ToBottom" v-if="state['unReadMsgNum'].value" class="unReadMsg">{{ state['unReadMsgNum'] }}条未读信息
+            </div>
           </transition>
         </div>
         <div class="chatting-wrapper-progress">
           <music-progress></music-progress>
         </div>
         <div class="chatting-wrapper-footer">
-          <chat-message></chat-message>
+          <chat-message ref="chatMessage"></chat-message>
           <music-lyric></music-lyric>
         </div>
       </div>
@@ -39,6 +41,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { checkHistory } from '@/api/chatting';
 import { useStore } from 'vuex';
 import { scrollBottom } from '@/utils/scrolltoBottom';
+import { setThemeStyle } from '@/theme';
 const { proxy } = getCurrentInstance()
 
 //参数映射 方法映射
@@ -157,13 +160,17 @@ function updateMusic(music) {
   //这个currentTime是进入房间时音乐开始播放的时间 不是正在播放的时间
   music_current_time && (mutations['setMusicStartTime'])(music_current_time)
 }
-
+const stopLoad = ref(false)
 //查询房间历史信息
 async function getHistory() {
   const res = await checkHistory({
     room_id: state['room_id'].value,
     ...messageParam
   })
+
+  //当返回的数量少于一页数 说明是最后一页
+  stopLoad.value = res.data.length == 0
+  stopLoad.value && ElMessage({ message: '没有更多消息了', type: 'error' })
   mutations['setMessageList'](res.data)
 }
 
@@ -190,21 +197,26 @@ function initLocalStorageConfig() {
   keys.forEach((key) => localStorage[key] &&
     mutations['setGlobalRoomConfig']({ key, value: key === "theme" ? localStorage[key] : JSON.parse(localStorage[key]) })
   );
+  const theme = localStorage.theme || "default"
+  mutations['setGlobalRoomConfig']({ key: 'theme', value: theme })
+  setThemeStyle(theme)
 }
 
 //上拉获得更多历史消息
-function getMoreHistoryMes() {
+function handleLoadMore() {
+  if (stopLoad.value) return
   messageParam.page += 1
   getHistory()
 }
 
 //处理引用消息
+const chatMessage = ref(null)
 function handleQuoteMes(mes) {
-
+  chatMessage.value.setQuoteMsg(mes)
 }
 
 //滚动到可视区域
-function handleToBottom() {
+function ToBottom() {
   scrollBottom({ animation: true })
   mutations['setUnReadMsgNum'](0)
 }
@@ -230,7 +242,7 @@ function socketSubscribe() {
   proxy.$socket.$subscribe('online', data => {
     const { msg, online_user_list } = data
     mutations['setOnlineUserList'](online_user_list)
-    state['show_join_tip'] && mutations['setMessageList']({ message_type: "info", message_content: msg })
+    state['show_join_tip'].value && mutations['setMessageList']({ message_type: "info", message_content: msg })
 
   })
 
@@ -238,7 +250,7 @@ function socketSubscribe() {
   proxy.$socket.$subscribe('offline', data => {
     const { online_user_list, msg } = data
     mutations['setOnlineUserList'](online_user_list)
-    state['show_quit_tip'] && mutations['setMessageList']({ message_type: "info", message_content: msg })
+    state['show_quit_tip'].value && mutations['setMessageList']({ message_type: "info", message_content: msg })
   })
 
   //初始化房间信息
@@ -249,9 +261,9 @@ function socketSubscribe() {
     mutations['setOnlineUserList'](online_user_list)
     mutations['setRoomList'](room_list)
     updateMusic(data)
-    state['show_join_tip'] && mutations['setMessageList']({ message_type: "info", message_content: msg })
-    state['show_roomNotice'] && initRoomNotice()
-    console.log('initRoomInfo:', data);
+    state['show_join_tip'].value && mutations['setMessageList']({ message_type: "info", message_content: msg })
+    state['show_roomNotice'].value && initRoomNotice()
+    // console.log('initRoomInfo:', data);
   })
 
   //房间列表变动
@@ -259,7 +271,7 @@ function socketSubscribe() {
     const { room_list, msg } = data;
     mutations['setRoomList'](room_list)
     msg && mutations['setMessageList']({ message_type: 'info', message_content: msg })
-    console.log('updateRoomlist:', data);
+    // console.log('updateRoomlist:', data);
 
   })
 
@@ -287,9 +299,9 @@ function socketSubscribe() {
   //消息提示 切歌 歌曲无法播放
   proxy.$socket.$subscribe('notice', data => {
     const { code, message_type, message_content, msg } = data
-    code == 2 && mutations['setMessageList']({ message_type, message_content })
+    code == 2 && state['show_switchMusic'].value && mutations['setMessageList']({ message_type, message_content })
     code == -1 && ElMessage({ message: msg, type: 'error' })
-    console.log('notice:', data);
+    // console.log('notice:', data);
   })
 
   ////用户 收到消息
@@ -311,15 +323,15 @@ function socketSubscribe() {
     const { music_queue_list, msg } = data
     mutations['setMessageList']({ message_type: 'info', message_content: msg })
     mutations['setMusicQueueList'](music_queue_list)
-    console.log('chooseMusic:', data);
+    // console.log('chooseMusic:', data);
   })
 
   //用户切歌或者系统切歌
   proxy.$socket.$subscribe('changeMusic', data => {
     const { musicInfo, msg } = data
     updateMusic(musicInfo)
-    state['show_playMusic'] && mutations['setMessageList']({ message_type: 'info', message_content: msg })
-    console.log('changeMusic:', data);
+    state['show_playMusic'].value && mutations['setMessageList']({ message_type: 'info', message_content: msg })
+    // console.log('changeMusic:', data);
   })
 }
 //确定进入房间
@@ -348,7 +360,7 @@ function confirmConnect() {
 // setup生命周期执行的操作、
 // created 进行的操作
 
-initLocalStorageConfig()
+
 // localStorage.room_id && mutations['setRoomId'](localStorage.room_id);
 // initSocket()
 onBeforeMount(() => {
@@ -361,7 +373,7 @@ onBeforeMount(() => {
 onMounted(() => {
   initUserAddress()
   confirmConnect()
-  console.log(store.state);
+  // console.log(store.state);
 
 })
 
@@ -372,6 +384,8 @@ onBeforeUnmount(() => {
 
 
 <style lang="less" scoped>
+@import '../../theme/theme.less';
+
 @media screen and (max-width:640px) {
   .chatting-wrapper {
     position: fixed;
@@ -401,13 +415,13 @@ onBeforeUnmount(() => {
     flex-direction: column;
     z-index: 1;
     transition: all 0.5s;
-    background: #24293cbf;
-    box-shadow: 0 0 5px #bdbbbbae;
+    background: @message-container-bgcolor;
+    box-shadow: @message-container-shadow;
 
     &-header {
       width: 100%;
       height: 50px;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid @message-border;
     }
 
     &-content {
@@ -421,6 +435,7 @@ onBeforeUnmount(() => {
         right: 10px;
         bottom: 10px;
         padding: 5px 15px;
+        border-radius: 5px;
         font-size: 12px;
         color: #fff;
         background: rgb(247, 161, 24);

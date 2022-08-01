@@ -1,0 +1,35 @@
+//聊天面板背景色
+@message-container-bgcolor: var(--message-container-bgcolor, #fff);
+
+//主要文字颜色
+@message-text-color: var(--message-text-color, #333);
+
+//聊天面板阴影
+@message-container-shadow: var(--message-container-shadow, 0 0 15px #f2f2f2);
+
+//聊天 面板公告背景
+@message-tips-bgcolor: var(--message-tips-bgcolor, #929292);
+
+//边框
+@message-border: var(--message-border, #eee);
+
+//弹窗背景
+@pop-bgcolor: var(--pop-bgcolor, #ffffffb3);
+
+//hover背景
+@hover-bgcolor: var(--hover-bgcolor, #e0d2d3);
+
+//右侧drawer背景
+@drawer-bgcolor: var(--drawer-bgcolor, #fff);
+
+:export {
+  name: 'less';
+  message-container-bgcolor: @message-container-bgcolor;
+  message-text-color: @message-text-color;
+  message-container-shadow: @message-container-shadow;
+  message-tips-bgcolor: @message-tips-bgcolor;
+  message-border: @message-border;
+  pop-bgcolor: @pop-bgcolor;
+  hover-bgcolor: @hover-bgcolor;
+  drawer-bgcolor: @drawer-bgcolor;
+}

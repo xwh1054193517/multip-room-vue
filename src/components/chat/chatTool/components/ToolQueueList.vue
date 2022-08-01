@@ -1,6 +1,7 @@
 <template>
   <div class="queue-music">
     <div v-if="!music_queue_list.length" class="queue-music-empty">
+      <icon name="empty" scale="16" style="margin-bottom:20px;" />
       <span class="notice">当前房间还没人点歌</span>
     </div>
 
@@ -14,9 +15,10 @@
           <div class="music-info-singer">歌手：{{ item.music_singer }} 专辑:{{ item.music_album }}</div>
         </div>
         <div class="music-btn" @click="upMusic(item)">
-          顶歌
+          <icon name="queue-music-up" scale="1.6" style="margin-right:3px;" />顶歌
         </div>
         <div class="music-btn" @click="removeSong(item)">
+          <icon name="queue-music-del" scale="1.6" style="margin-right:3px;" />
           移除
         </div>
       </div>
@@ -45,6 +47,8 @@ function removeSong(music) {
 </script>
 
 <style lang="less" scoped>
+@import '../../../../theme/theme.less';
+
 .queue-music {
   padding: 10px 15px;
 
@@ -58,7 +62,7 @@ function removeSong(music) {
 
     .notice {
       user-select: none;
-      color: rgb(198, 198, 198);
+      color: @message-text-color;
       font-size: 20px;
     }
   }
@@ -87,7 +91,7 @@ function removeSong(music) {
       margin-left: 8px;
       flex: 1;
       width: 0;
-      color: aliceblue;
+      color: @message-text-color;
 
       &-name {
         font-size: 16px;
@@ -106,7 +110,7 @@ function removeSong(music) {
       cursor: pointer;
       display: flex;
       align-items: center;
-      color: aliceblue;
+      color: @message-text-color;
       border: 1px solid #eee;
       margin: 0 3px;
       transition: all 0.3s ease;

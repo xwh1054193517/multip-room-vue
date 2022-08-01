@@ -23,7 +23,7 @@ export default {
 
   removeToken(state) {
     state.token = null,
-    clearToken()
+      clearToken()
   },
 
   setUserInfo(state, user_info) {
@@ -53,6 +53,11 @@ export default {
 
 
   /*--------------音乐信息---------------*/
+  setVolume(state, volume) {
+    state.music_volume = volume
+    localStorage.setItem('volume', volume)
+  },
+
   setCurrentMusicInfo(state, currentMusicInfo) {
     const { music_info, music_src, music_lrc, music_downloadSrc } = currentMusicInfo
     state.music_info = music_info,
@@ -81,13 +86,14 @@ export default {
   setMessageList(state, message_info) {
     const isArr = Array.isArray(message_info)
     let result = []
-    isArr && (result = [...state.message_list, ...message_info])
+    //是数组 的话 就是上拉刷新 要加到前面去
+    isArr && (result = [...message_info, ...state.message_list])
     !isArr && (result = [...state.message_list, ...[message_info]])
     state.message_list = state.show_all_tips ? result : result.filter(k => k.message_type !== 'info')
   },
 
   clearTips(state) {
-    state.message_list = state.message_list.filter(k => k.message_type !== 'tips')
+    state.message_list = state.message_list.filter(k => k.message_type !== 'info')
   },
 
   clearNotice(state) {
@@ -100,7 +106,7 @@ export default {
     hasMessage !== -1 && (state.message_list[hasMessage].message_type = 'info')
     state.message_list.forEach(k => {
       if (k?.quote_info?.quote_message_id === id) {
-        k.quote_info.quote_message_status = 2
+        k.quote_info.quote_message_statue = 2
       }
     });
   },

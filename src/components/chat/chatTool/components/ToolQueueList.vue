@@ -34,13 +34,13 @@ import { useStore } from 'vuex';
 const store = useStore()
 const music_queue_list = computed(() => store.state.music_queue_list)
 const imgFail = Config.imgFail
-function upMusic(music) {
-  console.log(music);
+const { proxy } = getCurrentInstance()
 
+function upMusic(music) {
+  proxy.$socket.client.emit("upMusic", music)
 }
 
 //移除房间歌单
-const { proxy } = getCurrentInstance()
 function removeSong(music) {
   proxy.$socket.client.emit("removeMusic", music)
 }

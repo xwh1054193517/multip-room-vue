@@ -16,7 +16,7 @@ import { addCollect } from '@/api/music';
 import { ElMessage } from 'element-plus';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-const store = useStore()
+const store = useStore()  
 const music_current_time = computed(() => store.state.music_current_time || null)
 const music_info = computed(() => store.state.music_info || {})
 const width = computed(() =>

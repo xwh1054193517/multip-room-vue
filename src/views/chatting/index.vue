@@ -322,9 +322,9 @@ function socketSubscribe() {
   //用户点歌
   proxy.$socket.$subscribe('chooseMusic', data => {
     const { music_queue_list, msg } = data
-    mutations['setMessageList']({ message_type: 'info', message_content: msg })
+    msg && mutations['setMessageList']({ message_type: 'info', message_content: msg })
     mutations['setMusicQueueList'](music_queue_list)
-    // console.log('chooseMusic:', data);
+    console.log('chooseMusic:', music_queue_list);
   })
 
   //用户切歌或者系统切歌

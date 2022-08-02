@@ -14,7 +14,7 @@ export default {
   //获取当前房间信息
   async getCurrentRoom({ commit, state }) {
     const res = await getRoomDetail({ room_id: state.room_id })
-    commit('setRoomInfo', res.data)  
+    commit('setRoomInfo', res.data)
   },
 
   //退出登录
@@ -22,7 +22,7 @@ export default {
     return new Promise<void>((resolve) => {
       commit('removeToken')
       commit('resetStore')
-    
+
       router.replace('/login')
       resolve()
     })

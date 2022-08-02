@@ -1,6 +1,6 @@
 import myRequest from "@/utils/http";
 
-export const createRoom = data => myRequest('post', '/chat/createRoom', data)
+export const createUserRoom = data => myRequest('post', '/chat/createRoom', data)
 
 export const getRoomDetail = data => myRequest('get', '/chat/roomDetail', data)
 

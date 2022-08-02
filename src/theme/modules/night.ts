@@ -6,5 +6,5 @@ export default {
   'message-border':'#494949',
   'pop-bgcolor':'#292f45e6',
   'hover-bgcolor':'#292f45e6',
-  'drawer-bgcolor':'#2a283dcf',
+  'drawer-bgcolor':'#09090ecf',
 }

@@ -11,15 +11,16 @@ var cos = new COS({
   Protocol: 'http:',
   FollowRedirect: false,
 });
-
+const allowImg = ['png', 'jpg', 'gif', 'jpeg']
 export async function putFile(files, prefix: string) {
   //单文件
   const { name, orgfile, type, size } = files
+  const key = allowImg.includes(type) ? `${prefix}/${new Date().getTime()}-${name}` : `${prefix}/${name}`
   return new Promise((resolve, reject) => {
     cos.putObject({
       Bucket: process.env.VUE_APP_BUCKET,
       Region: process.env.VUE_APP_REGION,
-      Key: `${prefix}/${name}`,
+      Key: key,
       Body: orgfile, // 上传文件对象
       Sign: true,
     }, (err, data) => {

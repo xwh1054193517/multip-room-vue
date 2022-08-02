@@ -12,6 +12,8 @@
 </template>
 
 <script lang="ts" setup>
+import { addCollect } from '@/api/music';
+import { ElMessage } from 'element-plus';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore()
@@ -21,7 +23,9 @@ const width = computed(() =>
   ((Number(music_current_time.value) / Number(music_info.value.music_duration)) * 100).toFixed(2)
 )
 
-const collectMusic = () => {
+const collectMusic = async () => {
+  await addCollect(music_info.value)
+  ElMessage({ message: '收藏歌曲成功', type: 'success' })
 
 }
 </script>

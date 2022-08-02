@@ -86,7 +86,7 @@
                     <Delete />
                   </el-icon>撤回消息
                 </el-dropdown-item>
-                <el-dropdown-item v-if="otherFileType(item.message_type) || imgMsgType.includes(item.message_type)"
+                <el-dropdown-item v-if="otherFileType(item.message_type)"
                   command="3">
                   <el-icon>
                     <Download />

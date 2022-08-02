@@ -14,13 +14,14 @@
     </div>
 
     <div class="header-right flex-center">
-      <!-- <div v-if="Number(my_room_id) === Number(room_id)" :class="[
+      <div v-if="Number(getters['my_room_id'].value) === Number(getters['room_id'].value)" :class="[
         'header-right-item',
         'flex-center',
         { 'active-menu': opt.opt4.show },
       ]" @click.stop="openBody(4)">
+      <icon name="chat-manage" scale="1.8" class="icon" />
         <span class="visible-xl visible-lg">管理</span>
-      </div> -->
+      </div>
       <div :class="[
         'header-right-item',
         'flex-center',
@@ -54,31 +55,68 @@
       <OnlineUserList></OnlineUserList>
     </chat-pop>
     <chat-pop :options="opt.opt2" :top="60" :right="10" :height="450" title="房间列表">
-      <!-- <el-button size="small" >{{ BtnText }}</el-button> -->
-      <RoomList></RoomList>
+      <template v-slot:header>
+        <el-button v-if="!isMyRoom" size="small" @click="createOrJoinRoom">{{ BtnText }}</el-button>
+      </template>
+      <RoomList :createRoom="createRoom" @cancel="handleCreate" @close="closeBody" @createSuccess="handleCreate">
+      </RoomList>
     </chat-pop>
     <chat-pop :options="opt.opt3" :top="60" :right="10" :height="450" title="个人信息">
       <PersonInfo></PersonInfo>
+    </chat-pop>
+    <chat-pop :options="opt.opt4" :top="60" :right="50" title="房间设置">
+      <RoomConfig />
     </chat-pop>
   </div>
 </template>
 
 <script lang="ts" setup>
 import ChatPop from '@/components/chatPop/index.vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, getCurrentInstance, reactive, ref } from 'vue';
 import OnlineUserList from './components/OnlineUserList.vue';
 import RoomList from './components/RoomList.vue';
 import PersonInfo from './components/PersonInfo.vue';
 import { useActions, useGetters, useMutations } from '@/utils/hooks/useMap';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import RoomConfig from './components/RoomConfig.vue';
 const opt = reactive({
   opt1: { show: false },
   opt2: { show: false },
   opt3: { show: false },
   opt4: { show: false },
 })
-const createRoom = ref(false)
+const actions = useActions(['getUser', 'loginOut'])
+const mutations = useMutations(['setRoomId'])
+const getters = useGetters([
+  'my_room_id',
+  'online_user_Num',
+  'online_room_Num',
+  'room_id',
+  'room_info'
+])
 
+//创建或者加入房间
+const { proxy } = getCurrentInstance()
+const createRoom = ref(false)
+function createOrJoinRoom() {
+  if (!proxy.$socket.client.connected) {
+    return actions['loginOut']()
+  }
+  if (!getters['my_room_id'].value) {
+    return (createRoom.value = true)
+  }
+  if (Number(getters['my_room_id'].value) === Number(getters['room_id'].value)) {
+    return ElMessage({ message: '已经在这个房间里', type: 'warning' })
+  }
+  mutations['setRoomId'](getters['my_room_id'].value)
+  closeBody()
+
+}
+//成功回调
+async function handleCreate() {
+  createRoom.value = false;
+  actions['getUser']()
+}
 function openBody(val) {
   //如果已经打开就关闭
   if (opt[`opt${val}`].show) return (opt[`opt${val}`].show = false)
@@ -111,18 +149,15 @@ function handleLoginout() {
     })
 }
 
-const getters = useGetters([
-  'my_room_id',
-  'online_user_Num',
-  'online_room_Num',
-  'room_id',
-  'room_info'
-])
-const actions = useActions(['getUser', 'loginOut'])
-const mutations = useMutations(['setSignInPopup', 'setRoomId'])
+
+
 
 const BtnText = computed(() => {
   return !getters['my_room_id'].value ? '创建房间' : '我的房间'
+})
+
+const isMyRoom = computed(() => {
+  return Number(getters['room_id'].value) === Number(getters['my_room_id'].value)
 })
 </script>
 <style lang="less" scoped>

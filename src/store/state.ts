@@ -5,7 +5,7 @@ export function getDefault() {
     pre_img: null,
 
     room_list: [],
-    room_id: 555,
+    room_id: localStorage.getItem('room_id') || 555,
     room_admin: null,
     room_info: null,
 

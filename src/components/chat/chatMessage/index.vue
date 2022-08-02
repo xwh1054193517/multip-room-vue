@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import { scrollBottom } from '@/utils/scrolltoBottom';
-import { getFile, putFile } from '@/utils/upload';
+import {  putFile } from '@/utils/upload';
 import { ElMessage } from 'element-plus';
 import { getCurrentInstance, nextTick, ref, watch } from 'vue';
 import ChatTool from '../chatTool/index.vue';

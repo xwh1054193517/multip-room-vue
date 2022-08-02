@@ -137,6 +137,7 @@ async function initSocket() {
       address: cname,
       room_id: state['room_id'].value
     }
+    localStorage.room_id = state['room_id'].value
     proxy.$socket.client.open()
 
   }
@@ -270,7 +271,7 @@ function socketSubscribe() {
   proxy.$socket.$subscribe('updateRoomlist', data => {
     const { room_list, msg } = data;
     mutations['setRoomList'](room_list)
-    msg && mutations['setMessageList']({ message_type: 'info', message_content: msg })
+    // msg && mutations['setMessageList']({ message_type: 'info', message_content: msg })
     // console.log('updateRoomlist:', data);
 
   })
@@ -349,7 +350,7 @@ function confirmConnect() {
     .then(() => {
       initSocket()
       showChat.value = true
-
+      localStorage.room_id && mutations['setRoomId'](localStorage.room_id);
 
     })
     .catch(() => {
